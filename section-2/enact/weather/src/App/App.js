@@ -6,6 +6,7 @@ import React from 'react';
 
 import MainPanel from '../views/MainPanel';
 import AddCity from '../views/AddCity';
+import WeatherReport from '../views/WeatherReport';
 
 import css from './App.module.less';
 
@@ -20,18 +21,25 @@ const App = kind({
 		navigateToCity: (ev, {onNavigate}) => {
 			onNavigate({index: 1})
 		},
-		handleSelectBreadcrumb: (ev, props) => {
-			props.onNavigate({index: props.index-1});
+		handleSelectBreadcrumb: (ev, {onNavigate, index}) => {
+			onNavigate({index: index-1});
+		},
+		navigateToMainPanel: (ev, {onNavigate}) => {
+			onNavigate({index: 0})
+		},
+		navigateToReport: (ev, {onNavigate}) => {
+			onNavigate({index: 2});
 		}
 	},
 
-	render: ({index, handleSelectBreadcrumb, navigateToCity, ...rest}) => {
+	render: ({index, handleSelectBreadcrumb, navigateToCity, navigateToMainPanel, navigateToReport, ...rest}) => {
 		delete rest.onNavigate;
 		return (
 			<div {...rest}>
 				<ActivityPanels onSelectBreadcrumb={handleSelectBreadcrumb} index={index}>
-					<MainPanel onClick={navigateToCity}/>
-					<AddCity />
+					<MainPanel navigateToCity={navigateToCity} navigateToReport={navigateToReport}/>
+					<AddCity onBack = {navigateToMainPanel}/>
+					<WeatherReport />
 				</ActivityPanels>
 			</div>
 		)

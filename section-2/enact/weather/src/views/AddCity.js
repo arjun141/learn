@@ -1,9 +1,11 @@
 import Button from '@enact/moonstone/Button';
-import kind from '@enact/core/kind';
 import {Panel, Header} from '@enact/moonstone/Panels';
 import Input from '@enact/moonstone/Input';
 
 import React from 'react';
+import {connect} from 'react-redux';
+
+import {addCity} from '../actions';
 
 class AddCityPanel extends React.Component {
     constructor(props){
@@ -15,15 +17,26 @@ class AddCityPanel extends React.Component {
     handleChange = (ev) => {
         this.setState({value: ev.value});
     }
+    onSubmit = () => {
+        this.props.addCity(this.state.value);
+        this.props.onBack()
+    }
+
 	render(){
+        const {...props} = this.props;
+        delete props.addCity;
+        delete props.onBack;
+
         return (
-            <Panel {...this.props}>
+            <Panel {...props}>
                 <Header title="Add City" />
                 <Input value={this.state.value} onChange={this.handleChange} />
-                <Button>Search City</Button>
+                <Button onClick={this.onSubmit}>Search City</Button>
             </Panel>
         )
     }
 }
 
-export default AddCityPanel;
+
+
+export default connect(null, {addCity})(AddCityPanel);
